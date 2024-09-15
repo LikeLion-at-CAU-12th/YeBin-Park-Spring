@@ -17,7 +17,8 @@ public class Song extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="song_id")
-    private Long title;
+    private Long id;
+    private String title;
     private String content;
     @ManyToOne(fetch = FetchType.LAZY) //곡과 아티스트 N:1
     @JoinColumn(name="artist_id")
@@ -26,11 +27,4 @@ public class Song extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY) //곡과 앨범 N:1
     @JoinColumn(name="album_id")
     private Album album;
-
-    public void setArtist(Artist artist){
-        this.artist= artist;
-    }
-    public void setAlbum(Album album){
-        this.album= album;
-    }
 }
