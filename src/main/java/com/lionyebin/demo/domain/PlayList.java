@@ -28,15 +28,23 @@ public class PlayList {
     @JoinColumn(name="member_id")
     private Member member;
 
-    public void addSong(Song song){ //빌드 패턴 한번 사용해본 예시,,,
-        PlayListSong playListSong= PlayListSong.builder()
-                .playList(this)
-                .song(song)
-                .build();
+    public void addSong(Song song){//빌드 패턴 한번 사용해본 예시,,,
+
+        //.anyMath stream 안에서 내용이 하나라도 맞으면 true 반환-> all,none 보다 중복검사에 쓰기 적절
+        boolean songExists=playListSongs.stream()
+                .anyMatch(playListSong -> playListSong.getSong().equals(song));
+
+        if(!songExists) { //PlayListSong에 중복된 song 이 없어요 ~ -> 추가하기
+            PlayListSong playListSong = PlayListSong.builder()
+                    .playList(this)
+                    .song(song)
+                    .build();
+            this.playListSongs.add(playListSong);
+        }
     }
 
     public void removeSong(Song song) { //해당된 Song 을 찾아서 이 PlayList 객체에 관련된 PlayListSong 테이블 삭제.
-        playListSongs.removeIf(playListSong->playListSong.getSong().equals(song));
+        this.playListSongs.removeIf(playListSong->playListSong.getSong().equals(song));
     }
 
 
