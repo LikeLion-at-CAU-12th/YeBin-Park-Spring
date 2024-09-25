@@ -2,9 +2,8 @@ package com.lionyebin.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchConnectionDetails;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +21,10 @@ public class Member extends BaseTimeEntity{
     private String email;
     private int age;
 
+    @Builder
+    public Member(String username ,String email, int age){
+        this.username=username;
+        this.email=email;
+        this.age=age;
+    }
 }
