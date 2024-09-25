@@ -88,8 +88,6 @@ class MemberRepositoryTest {
         for (Member member : members) {
             System.out.println(member.getId() + " " + member.getAge() + " " + member.getUsername());
         }
-
-
     }
 
     @Test

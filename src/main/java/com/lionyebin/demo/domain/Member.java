@@ -2,7 +2,6 @@ package com.lionyebin.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchConnectionDetails;
 
 
 @Entity
