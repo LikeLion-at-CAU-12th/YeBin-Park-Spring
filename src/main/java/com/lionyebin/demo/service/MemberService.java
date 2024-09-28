@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service //Service 로 빈 등록
 @RequiredArgsConstructor
 public class MemberService {
@@ -39,10 +40,8 @@ public class MemberService {
 
     public void printMembersAge(int page, int size) {
         Page<Member> memberPage = getMembersByAge(page, size);
-        List<Member> members = memberPage.getContent();
 
-
-        for (Member member : members) {
+        for (Member member : memberPage.getContent()) {
             System.out.println("ID: " + member.getId() + ", age:"+ member.getAge()+", Username: " + member.getUsername());
         }
     }
@@ -55,10 +54,8 @@ public class MemberService {
 
     public void printMembersName(int page, int size) {
         Page<Member> memberPage = getMembersByName(page, size);
-        List<Member> members = memberPage.getContent();
 
-
-        for (Member member : members) {
+        for (Member member : memberPage.getContent()) {
             System.out.println("ID: " + member.getId()+", Username: " + member.getUsername());
         }
     }
