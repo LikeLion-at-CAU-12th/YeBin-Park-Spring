@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
+
     public Page<Member> getMembersByPage(int page, int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by("username").ascending());
         //정렬기준을 추가해 줄 수 있음.
@@ -27,6 +28,38 @@ public class MemberService {
 
         for (Member member : members) {
             System.out.println("ID: " + member.getId() + ", Username: " + member.getUsername());
+        }
+    }
+
+    public Page<Member> getMembersByAge(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("username").ascending());
+        //정렬기준을 추가해 줄 수 있음.
+        return memberJpaRepository.findByAgeGreaterThanEqual(20, pageable);
+    }
+
+    public void printMembersAge(int page, int size) {
+        Page<Member> memberPage = getMembersByAge(page, size);
+        List<Member> members = memberPage.getContent();
+
+
+        for (Member member : members) {
+            System.out.println("ID: " + member.getId() + ", age:"+ member.getAge()+", Username: " + member.getUsername());
+        }
+    }
+
+    public Page<Member> getMembersByName(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("username").ascending());
+        //정렬기준을 추가해 줄 수 있음.
+        return memberJpaRepository.findByUsernameStartingWith("user1", pageable);
+    }
+
+    public void printMembersName(int page, int size) {
+        Page<Member> memberPage = getMembersByName(page, size);
+        List<Member> members = memberPage.getContent();
+
+
+        for (Member member : members) {
+            System.out.println("ID: " + member.getId()+", Username: " + member.getUsername());
         }
     }
 }
