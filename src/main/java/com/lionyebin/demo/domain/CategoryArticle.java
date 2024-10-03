@@ -2,6 +2,7 @@ package com.lionyebin.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,11 @@ public class CategoryArticle extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @Builder
+    public CategoryArticle(Category category, Article article) {
+        this.category = category;
+        this.article = article;
+    }
 }
 
