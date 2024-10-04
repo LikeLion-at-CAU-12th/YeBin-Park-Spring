@@ -10,6 +10,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article {
     @Id
@@ -25,8 +26,12 @@ public class Article {
     private Member member;
 
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)  // 추가된 부분
+    private List<ArticleLog> logs = new ArrayList<>();
+
 
     @Builder
     public Article(String title, String content, Member member, List<Comment> comments) {
@@ -34,5 +39,9 @@ public class Article {
         this.content = content;
         this.member = member;
         this.comments=comments != null ? comments : new ArrayList<>();
+        for (Comment comment : this.comments) {
+            comment.setArticle(this); //comment 오류를 해결하기 위한 노력,,,
+        }
     }
+
 }

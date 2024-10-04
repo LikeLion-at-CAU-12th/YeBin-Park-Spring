@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface CategoryArticleJpaRepository extends JpaRepository<CategoryArticle, Long> {
     List<CategoryArticle> findByArticle(Article article);
+
+    void deleteByArticle(Article article);
 }
