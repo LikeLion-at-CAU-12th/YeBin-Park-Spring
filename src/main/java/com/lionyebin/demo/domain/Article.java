@@ -29,7 +29,7 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)  // 추가된 부분
+    @OneToMany(mappedBy = "article")
     private List<ArticleLog> logs = new ArrayList<>();
 
 

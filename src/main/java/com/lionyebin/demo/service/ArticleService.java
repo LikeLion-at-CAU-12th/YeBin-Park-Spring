@@ -120,12 +120,15 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new RuntimeException("해당 ID를 가진 게시글이 존재하지 않습니다."));
 
-        categoryArticleRepository.deleteByArticle(article);
         articleLogRepository.deleteByArticle(article);
+        categoryArticleRepository.deleteByArticle(article);
+
         articleRepository.deleteById(articleId);
 
         return "게시글 ID " + articleId + "가 삭제되었습니다.";
     }
+
+
 
     public List<ArticleResponseDto> findArticlesByMemberId(Long memberId) {
         List<Article> articles = articleRepository.findByMemberId(memberId);
