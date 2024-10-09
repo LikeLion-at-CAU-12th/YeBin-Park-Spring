@@ -1,20 +1,19 @@
 package com.lionyebin.demo.repository;
 
 import com.lionyebin.demo.domain.Member;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
-@SpringBootTest
-class MemberRepositoryTest {
-    @Autowired MemberRepository memberRepository;
 
-    EntityManager em;
+@SpringBootTest
+public class MemberJpaRepositoryTest {
+
+    @Autowired MemberJpaRepository memberJpaRepository;
+
     @Test
     @Transactional
     public void testMember() {
@@ -24,9 +23,10 @@ class MemberRepositoryTest {
                 .email("polarpheno@gmail.com")
                 .build();
 
-        Long savedId = memberRepository.save(member);
-        Member findMember = memberRepository.findOne(savedId);
+        Member savedMember = memberJpaRepository.save(member);
+        Member findMember = memberJpaRepository.findById(savedMember.getId()).orElse(null);
 
+        Assertions.assertThat(findMember).isNotNull();
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
         Assertions.assertThat(findMember).isEqualTo(member);
 
@@ -34,29 +34,8 @@ class MemberRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback()
-    public void testMember2() {
-        Member member = Member.builder()
-                .username("memberA")
-                .age(23)
-                .email("polarpheno@gmail.com")
-                .build();
+    public void testFindALl(){
 
-        Long savedId = memberRepository.save(member);
-
-        em.flush();
-        em.clear();
-
-        Member findMember = memberRepository.findOne(savedId);
-
-        Assertions.assertThat(findMember.getId()).isEqualTo(member.getId()); // 통과
-        Assertions.assertThat(findMember).isEqualTo(member); // 실패
-    }
-
-    @Test
-    @Transactional
-    @Rollback()
-    public void testFindAll() {
         Member member1 = Member.builder()
                 .username("member1")
                 .age(23)
@@ -75,24 +54,21 @@ class MemberRepositoryTest {
                 .email("polarpheno@gmail.com")
                 .build();
 
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+        memberJpaRepository.save(member3);
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
+        List<Member> members = memberJpaRepository.findAll();
 
-        em.flush();
-        em.clear();
-
-        List<Member> members = memberRepository.findAll();
-
-        for (Member member : members) {
+        for(Member member:members){
             System.out.println(member.getId() + " " + member.getAge() + " " + member.getUsername());
         }
+
+        Assertions.assertThat(members).hasSize(3);
     }
 
     @Test
     @Transactional
-    @Rollback
     public void testFindByUsername() {
         Member member = Member.builder()
                 .username("memberA")
@@ -100,27 +76,14 @@ class MemberRepositoryTest {
                 .email("polarpheno@gmail.com")
                 .build();
 
-        Long savedId = memberRepository.save(member);
+        memberJpaRepository.save(member);
 
-        em.flush();
-        em.clear();
+        List<Member> byUsername = memberJpaRepository.findByUsername(member.getUsername());
 
-        List<Member> byUsername = memberRepository.findByUsername(member.getUsername());
-
-        for (Member member1 : byUsername) {
+        for(Member member1 : byUsername){
             System.out.println(member1.getId());
         }
-    }
 
-    @Test
-    void findOne() {
-    }
-
-    @Test
-    void findAll() {
-    }
-
-    @Test
-    void findByUsername() {
+        Assertions.assertThat(byUsername).isNotEmpty();
     }
 }
