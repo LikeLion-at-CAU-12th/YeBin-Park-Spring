@@ -1,14 +1,13 @@
 package com.lionyebin.demo.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryArticle extends BaseTimeEntity {
     @Id @GeneratedValue
@@ -22,5 +21,11 @@ public class CategoryArticle extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @Builder
+    public CategoryArticle(Category category, Article article) {
+        this.category = category;
+        this.article = article;
+    }
 }
 
