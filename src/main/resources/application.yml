@@ -1,13 +1,15 @@
 spring:
+  profiles:
+    include: SECRET-KEY
   datasource:
     #    url: jdbc:h2:tcp://localhost/~/test-mutsa # 메모리 내 데이터베이스 URL
     #    driver-class-name: org.h2.Driver # H2 드라이버 클래스
     #    username: sa # 기본 사용자 이름
     #    password: # 기본 비밀번호
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://likelion-spring-3.cdmesi84kxr4.ap-northeast-2.rds.amazonaws.com/likelion_spring
-    username: admin
-    password: 00d08041!
+    url: jdbc:mysql://${database-host}:3306/${database-name}
+    username: ${database-username}
+    password: ${database-password}
   h2:
     console:
       enabled: true # H2 콘솔을 활성화합니다.
