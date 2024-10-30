@@ -1,12 +1,14 @@
 package com.lionyebin.demo.service;
 
 import com.lionyebin.demo.domain.Member;
+import com.lionyebin.demo.dto.Joinrequest;
 import com.lionyebin.demo.repository.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +30,20 @@ public class MemberService {
         for (Member member : members) {
             System.out.println("ID: " + member.getId() + ", Username: " + member.getUsername());
         }
+    }
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder; // 비밀번호 인코더 DI
+
+    public void join(Joinrequest joinRequest) {
+        if (memberJpaRepository.existsByUsername(joinRequest.getUsername())) {
+            return; // 나중에는 예외 처리
+        }
+
+        Member member = Member.builder()
+                .username(joinRequest.getUsername())
+                .password(bCryptPasswordEncoder.encode(joinRequest.getPassword()))
+                .build();
+
+        memberJpaRepository.save(member);
     }
 }
