@@ -1,5 +1,6 @@
 package com.lionyebin.demo.config;
 
+import com.lionyebin.demo.service.CustomOAuth2UserService;
 import com.lionyebin.demo.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,8 @@ import java.util.Collections;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomUserDetailsService userDetailsService;
+    private final CustomOAuth2UserService customOAuth2UserService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //설정추가
@@ -27,12 +30,18 @@ public class SecurityConfig {
                 .cors((SecurityConfig::corsAllow))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth)->auth //조인과 로그인은 모두에게 허용
-                        .requestMatchers("/join", "login").permitAll()
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/", "/join", "/login").permitAll()
+//                        .requestMatchers("/api/**").authenticated()
                 )
+//                .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .logout(Customizer.withDefaults())
-                .userDetailsService(customUserDetailsService);
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                )
+                .userDetailsService(userDetailsService);
         return http.build();
     }
 

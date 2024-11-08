@@ -27,5 +27,17 @@ spring:
     init:
       mode: always # 애플리케이션 시작 시 스크립트 초기화 (기본값: embedded)
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "813243455001-nkebb134viniqnk88ju6s5i6kb1hqs82.apps.googleusercontent.com"
+            client-secret: "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"
+            scope:
+              - email
+              - profile
+            redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+
   logging.level:
     org.hibernate.SQL: debug

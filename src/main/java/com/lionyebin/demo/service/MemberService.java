@@ -28,7 +28,7 @@ public class MemberService {
         List<Member> members = memberPage.getContent();
 
         for (Member member : members) {
-            System.out.println("ID: " + member.getId() + ", Username: " + member.getUsername());
+            System.out.println("ID: " + member.getId() + ", Username: " + member.getUsername()+ member.getEmail());
         }
     }
 
@@ -42,6 +42,7 @@ public class MemberService {
         Member member = Member.builder()
                 .username(joinRequest.getUsername())
                 .password(bCryptPasswordEncoder.encode(joinRequest.getPassword()))
+                .email(joinRequest.getEmail())
                 .build();
 
         memberJpaRepository.save(member);
