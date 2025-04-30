@@ -1,25 +1,24 @@
 package com.lionyebin.demo.domain;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
-public class ArticleLog {
+public class ArticleLog extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "article_log_id")
     private Long id;
     private String title;
     private String content;
 
-    @OneToOne(cascade = ALL, fetch = LAZY)
+    @ManyToOne(cascade = ALL, fetch = LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
