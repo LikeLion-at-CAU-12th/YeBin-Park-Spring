@@ -6,9 +6,10 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class MemberRepository {
+public abstract class MemberRepository {
     @PersistenceContext
     EntityManager em;
     public Long save(Member member){

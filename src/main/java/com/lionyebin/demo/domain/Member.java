@@ -6,6 +6,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity{
@@ -15,15 +16,17 @@ public class Member extends BaseTimeEntity{
     @Column(name="member_id")
     private long id;
 
-    @Column(nullable = false)
+    @Column
     private String username;
     private String email;
+    private String password;
     private int age;
 
     @Builder
-    public Member(String username ,String email, int age){
+    public Member(String username ,String email, int age, String password) {
         this.username=username;
         this.email=email;
         this.age=age;
+        this.password=password;
     }
 }
